@@ -1,0 +1,80 @@
+# %%
+import pandas as pd 
+
+dfBionda = pd.read_csv('/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/OncoMX/Bionda_complete.csv', index_col=0)
+# Quick function check 
+def dfChkBasics(dframe, valCnt = False): 
+  cnt = 1
+  print('\ndataframe Basic Check function -')
+  try:
+    print(f'\n{cnt}: info(): ')
+    cnt+=1
+    print(dframe.info())
+  except: pass
+
+  print(f'\n{cnt}: describe(): ')
+  cnt+=1
+  print(dframe.describe())
+  try:
+    print(f'\n{cnt}: columns: ')
+    cnt+=1
+    print(dframe.columns)
+  except: pass
+
+  print(f'\n{cnt}: head() -- ')
+  cnt+=1
+  print(dframe.head())
+
+  print(f'\n{cnt}: shape: ')
+  cnt+=1
+  print(dframe.shape)
+
+  if (valCnt):
+    print('\nValue Counts for each feature -')
+    for colname in dframe.columns :
+      print(f'\n{cnt}: {colname} value_counts(): ')
+      print(dframe[colname].value_counts())
+      cnt +=1
+
+# Check
+dfChkBasics(dfBionda,True)
+# 
+print(list(dfBionda.columns))
+# %%
+print(dfBionda.Disease.describe())
+# %%
+print(dfBionda.Disease.value_counts())
+# %%
+#dfBionda = dfBionda[dfBionda.Disease != ' disease']
+#print(dfBionda.value_counts())
+# %%
+search_values = ['cancer','carcinoma','melanoma']
+dfBionda[dfBionda['"Disease"'].str.contains('|'.join(search_values))]
+# %%
+#def CleanDisease(row):
+    thedisease = row['Disease']
+    thedisease=thedisease.drop()
+    if thedisease.str.contains('carcinoma'):
+        return thedisease
+    if thedisease.str.containns('cancer'):
+        return thedisease
+    else: 
+        import numpy as np
+        return np.nan
+# dfBionda = dfBionda[dfBionda.Disease != 0]
+#dfBionda['Disease']=dfBionda(CleanDisease, axis=1)
+
+#def CleanerDisease(row): 
+    thediseaseclean = row['Disease']
+    if thediseaseclean == 'NaN': 
+        cleanbionda = dfBionda[dfBionda.Disease != 'NaN']
+        x = cleanbionda.Disease.value_counts()
+        return x
+
+
+# dfBionda['Disease']==dfBionda(CleanerDisease,axis=1) 
+
+#print(dfBionda.Disease.describe())
+# %%
+#print(dfBionda.Disease.value_counts())
+# %%
