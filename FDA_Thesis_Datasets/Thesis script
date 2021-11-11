@@ -1,0 +1,82 @@
+# %%
+# Importing modules 
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
+import seaborn as sns
+plt.style.use('classic') 
+sns.set(style="ticks")
+
+# Defining dataframes cleaning fucntion
+def dfChkBasics(dframe, valCnt = False): 
+  cnt = 1
+  print('\ndataframe Basic Check function -')
+  try:
+    print(f'\n{cnt}: info(): ')
+    cnt+=1
+    print(dframe.info())
+  except: pass
+
+  print(f'\n{cnt}: describe(): ')
+  cnt+=1
+  print(dframe.describe())
+  try:
+    print(f'\n{cnt}: columns: ')
+    cnt+=1
+    print(dframe.columns)
+  except: pass
+
+  print(f'\n{cnt}: head() -- ')
+  cnt+=1
+  print(dframe.head())
+
+  print(f'\n{cnt}: shape: ')
+  cnt+=1
+  print(dframe.shape)
+
+  if (valCnt):
+    print('\nValue Counts for each feature -')
+    for colname in dframe.columns :
+      print(f'\n{cnt}: {colname} value_counts(): ')
+      print(dframe[colname].value_counts())
+      cnt +=1
+
+# Loading the dataframe
+df0 = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/FDA_Thesis_Datasets/Pharmacogenomic_Biomarkers_Drug_Labeling_FDA.csv') 
+
+# Quick dataframe fucntion check
+dfChkBasics(df0, True)
+
+print("\nReady to continue")
+# %%
+# Data cleaning 
+print(df0['Therapeutic_Area'].value_counts().tolist()) # Check different therapeutic areas
+# Results show 'oncology' and 'onoclogy'*Mispelling error*
+def CleanTherapeutic(df0): # Define cleaning fucntion for Therapeutic_Area column
+    search_values = ['Oncology', 'Onoclogy'] # Assign search values as key terms for data retention
+    dfcleantherapeutic = df0[df0['Therapeutic_Area'].str.contains('|'.join(search_values))] # Remove all rows with therapeutic area different from search values 
+    return dfcleantherapeutic
+
+# Apply cleaning fucntion 
+df = CleanTherapeutic(df0) 
+
+# Append new data to csv file 
+#
+filename = "Pharmacogenomic_Biomarkers_Drug_Labeling_FDA.csv"
+# opening the file with w+ mode truncates the file
+f = open(filename, "w+")
+f.close() # Clear csv file 
+# %%
+df.to_csv('Pharmacogenomic_Biomarkers_Drug_Labeling_FDA.csv', mode='a') # Append filetered data to csv
+
+# %%
+# Biomarker count in Oncology Therapeutic area
+print(df['Biomarker'].value_counts().index.tolist()) # Prints list of biomarkers 
+
+# %%
+# Pharmacogenomic Biomarker count in Oncology Plot 
+dfBarPlot = df.Biomarker.value_counts().plot(kind='bar', title='FDA Pharmacogenomic Biomarker Count in the Oncology Therapeutic Area per Drug', grid=False, figsize=(15,7))
+x = dfBarPlot.get_figure()
+dfBarPLotPharmacogenomic = x.savefig('/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/FDA_Thesis_Datasets/Output_files/FDA_Cancer_Pharamcogenomic_Biomarker.png')
+# %% 
+
