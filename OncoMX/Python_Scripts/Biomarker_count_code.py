@@ -39,7 +39,7 @@ def dfChkBasics(dframe, valCnt = False):
       print(f'\n{cnt}: {colname} value_counts(): ')
       print(dframe[colname].value_counts())
       cnt +=1
-df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/Cancer Biomarkers v1.0 - QCed Reviewed Biomarkers-4.csv' , index_col=0) 
+df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/test.csv' , index_col=0) 
 dfChkBasics(df, True)
 print(df.Disease.describe(), '\n', df.Disease.value_counts(dropna=False))
 
@@ -56,10 +56,12 @@ df['Disease'] = df['Disease'].replace({'ovarian cancer (DOID: 2394)':'ovarian ca
                                         'Prostate cancer (DOID: 10283)': 'prostate Cancer (DOID:10283)',\
                                         'prostate cancer ( DOID:10283)':'prostate Cancer (DOID:10283)',\
                                         'prostate Cancer (DOID:10283)':'prostate cancer (DOID:10283)',\
+                                        'prostate Cancer (DOID:10283)':'prostate cancer (DOID:10283)',\
                                         'Thyroid cancer (DOID:1781)':'thyroid cancer (DOID:1781)',\
                                         'pancreatic cancer (DOID: 1793)':'pancreatic cancer (DOID:1793)', \
                                         'Head and Neck Cancer (DOID:11934)':'head and neck cancer (DOID:11934)', \
                                         'Stomach cancer (DOID:10534)':'stomach cancer (DOID:10534)', \
+                                        'Stomach cancer(DOID:10534)':'stomach cancer (DOID:10534)', \
                                         'Melanoma (DOID:1909)':'melanoma (DOID:1909)',\
                                         'melanoma (DOID:4159)':'melanoma (DOID:1909)',\
                                         'urinary bladder cancer (DOID: 11054)':'urinary bladder cancer (DOID:11054)',\
@@ -69,9 +71,14 @@ df['Disease'] = df['Disease'].replace({'ovarian cancer (DOID: 2394)':'ovarian ca
                                         'Hepatocellular carcinoma (DOID:684)': 'liver cancer (DOID:3571)'})
 
 # %%
+print(df.Disease.describe(), '\n', df.Disease.value_counts(dropna=False))
 
-df.Disease.value_counts().plot(kind='bar', title='Biomarker Count per Cancer Type ', grid=False, figsize=(15,7))
+#%%
+from matplotlib import cm
+color = cm.Blues_r(np.linspace(.4, .8, 30))
+df.Disease.value_counts().plot(kind='bar', stacked=True, color=color, title='Biomarker Count per Cancer Type ', grid=False, figsize=(15,7))
 # %%
-
-
-# %%
+#%%
+from matplotlib import cm
+color = cm.inferno_r(np.linspace(.4, .8, 30))
+df.Disease.value_counts().plot(kind='bar', stacked=True, color=color, title='Biomarker Count per Cancer Type ', grid=False, figsize=(15,7))
