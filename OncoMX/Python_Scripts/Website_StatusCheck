@@ -1,14 +1,64 @@
-# Code to check websire status 
-# url https://data.tst.oncomx.org/cancerbiomarkers
+# Check websire status 
+# url https://data.oncomx.org/cancerbiomarkers
 
 # %% 
 import requests
-url = 'https://oncomx.org/oncodataview/fda'
-oncomxpage = requests.get(url)
+url = 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/nucleic-acid-based-tests'
+oncomxpage = requests.get(url, verify=False)
 print(oncomxpage.status_code)
 
 print("\nReady to continue")
 
 # %% 
 # Cleaner view content
-oncomxpage.
+print(oncomxpage.content)
+print("\nReady to continue.")
+
+print(oncomxpage.text)
+print("\nReady to continue.")
+
+from bs4 import BeautifulSoup
+# soup = BeautifulSoup(thispage.content, 'lxml')
+# soup = BeautifulSoup(thispage.content, 'html.parser')
+soup = BeautifulSoup(oncomxpage.content, 'html5lib')
+# beautifulSoup needs the contents given by the requests.get(url) object, then parse it.
+print("\nReady to continue.")
+
+
+print(soup.prettify())
+print("\nReady to continue.")
+
+#%% 
+foundlast = soup.find('table', dataid='',class_='table table-condensed table-striped table-bordered align-top') 
+print(foundlast, '\n')
+print(foundlast.text)
+for th in foundlast:
+    th = th.find_all('th')
+    row = [i.text for i in th]
+    print(row)
+import pandas as pd
+df = pd.DataFrame()
+df['Rows'] = row
+
+for th in foundlast:
+    th = th.find_all('th')
+    row = [i.text for i in th]
+    print(row)
+
+# %%
+import urllib.request
+url = 'https://data.oncomx.org/OMX_000079'
+html = urllib.request.urlopen(url).read()
+bs = BeautifulSoup(html)
+table = bs.find(lambda tag: tag.name=='div' and tag.has_attr('class') and tag['class']=="google-visualization-table") 
+rows = table.findAll(lambda tag: tag.name=='div')
+# %%
+from bs4 import BeautifulSoup
+
+url = 'https://www.fda.gov/medical-devices/in-vitro-diagnostics/nucleic-acid-based-tests'
+html = urllib.request.urlopen(url).read()
+bs = BeautifulSoup(html)
+table = bs.find(lambda tag: tag.name=='table' and tag.has_attr('class') and tag['class']=="table table-condensed table-striped table-bordered align-top") 
+rows = table.findAll(lambda tag: tag.name=='table')
+
+# %%
