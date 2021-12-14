@@ -10,7 +10,7 @@ import random
 # %% 
 ### Read dataframe 
 
-df = pd.DataFrame(read_csv(r'/Users/hawacoulibaly/Documents/HIVE Lab/OncoMX/QC ONcoMX Biomarkers/QC-Biomarkers-Test.csv'))
+df = pd.DataFrame(read_csv(r'/Users/hawacoulibaly/Documents/HIVE Lab/OncoMX/QC ONcoMX Biomarkers/Unreviewed-Biomarkers-Test.csv'))
 df.head()
 # %% 
 ### Cleaning
@@ -18,13 +18,13 @@ df = df.rename(columns={'Disease name': 'Disease'})
 df = df.rename(columns={'Biomarker ID': 'ID'})
 df = df.rename(columns={'BEST biomarker type': 'BEST'})
 
-#df.groupby('Disease').count()
+df.groupby('Disease').count()
 # %%
 color = cm.inferno_r(np.linspace(.4, .8, 30))
 df.Disease.value_counts().plot(kind='bar', stacked=True, color=color, title='Biomarker Count per Cancer Type ', grid=False, figsize=(15,7))
 # %%
 # Prepare Data
-dubc = df.groupby('Disease').BEST.nunique()
+dubc = df.groupby('Disease').Disease.value_counts()
 dtbc = df.groupby('Disease').size()
 
 
@@ -56,7 +56,7 @@ import seaborn as sns
 sns.set()
 UniqueCount.set_index('Disease').T.plot(kind='bar', stacked=True)
 fig, ax = plt.subplots(figsize=(16,10), dpi= 80)
-# %%
+
 ax.vlines(x=UniqueCount.index, ymin=0, ymax=UniqueCount.counts, color='firebrick', alpha=0.7, linewidth=2)
 ax.scatter(x=UniqueCount.index, y=UniqueCount.counts, s=75, color='firebrick', alpha=0.7)
 
@@ -115,5 +115,27 @@ plt.xlabel(x_var)
 plt.ylabel("Frequency")
 plt.ylim(0, 40)
 plt.xticks(ticks=bins, labels=np.unique(df[x_var]).tolist(), rotation=90, horizontalalignment='left')
+plt.show()
+# %%
+df1 = UniqueCount[['counts', 'Disease']].groupby('Disease').apply(lambda x: x.mean())
+df1.sort_values('counts', inplace=True)
+df1.reset_index(inplace=True)
+
+# Draw plot
+fig, ax = plt.subplots(figsize=(16,10), dpi= 80)
+ax.vlines(x=UniqueCount.index, ymin=0, ymax=UniqueCount.counts, color='firebrick', alpha=0.7, linewidth=2)
+ax.scatter(x=UniqueCount.index, y=UniqueCount.counts, s=75, color='firebrick', alpha=0.7)
+
+# Title, Label, Ticks and Ylim
+ax.set_title('Lollipop Chart for Highway Mileage', fontdict={'size':22})
+ax.set_ylabel('Miles Per Gallon')
+ax.set_xticks(UniqueCount.index)
+ax.set_xticklabels(UniqueCount.Disease.str.upper(), rotation=60, fontdict={'horizontalalignment': 'right', 'size':12})
+ax.set_ylim(0, 30)
+
+# Annotate
+for row in UniqueCount.itertuples():
+    ax.text(row.Index, row.counts+.5, s=round(row.counts, 2), horizontalalignment= 'center', verticalalignment='bottom', fontsize=14)
+
 plt.show()
 # %%
