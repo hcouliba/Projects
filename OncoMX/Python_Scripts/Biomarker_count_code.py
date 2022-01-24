@@ -39,8 +39,12 @@ def dfChkBasics(dframe, valCnt = False):
       print(f'\n{cnt}: {colname} value_counts(): ')
       print(dframe[colname].value_counts())
       cnt +=1
-df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/test.csv' , index_col=0) 
+df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/Cancer Biomarkers v1.0 - QCed Reviewed Biomarkers.csv' , index_col=0) 
 dfChkBasics(df, True)
+#%%
+df = df.rename(columns={'Disease name': 'Disease'})
+df['Disease'].value_counts()
+# %%
 print(df.Disease.describe(), '\n', df.Disease.value_counts(dropna=False))
 
 print("\nReady to continue.")
@@ -73,7 +77,7 @@ df['Disease'] = df['Disease'].replace({'ovarian cancer (DOID: 2394)':'ovarian ca
 # %%
 print(df.Disease.describe(), '\n', df.Disease.value_counts(dropna=False))
 
-#%%
+# %%
 from matplotlib import cm
 color = cm.Blues_r(np.linspace(.4, .8, 30))
 df.Disease.value_counts().plot(kind='bar', stacked=True, color=color, title='Biomarker Count per Cancer Type ', grid=False, figsize=(15,7))
@@ -82,3 +86,18 @@ df.Disease.value_counts().plot(kind='bar', stacked=True, color=color, title='Bio
 from matplotlib import cm
 color = cm.inferno_r(np.linspace(.4, .8, 30))
 df.Disease.value_counts().plot(kind='bar', stacked=True, color=color, title='Biomarker Count per Cancer Type ', grid=False, figsize=(15,7))
+# %% 
+# Count total number of rows 
+index = df.index
+number_of_rows = len(index)
+print(number_of_rows)
+# %%
+print(df.nunique())
+# %%
+import matplotlib.pyplot as plt
+from matplotlib_venn import venn2
+
+# Use the venn2 function
+venn2(subsets = (258, 0, 213), set_labels = ('', ''))
+plt.show()
+# %%
