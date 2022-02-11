@@ -68,6 +68,7 @@ df['Disease'] = df['Disease'].replace({'ovarian cancer (DOID: 2394)':'ovarian ca
                                         'Stomach cancer(DOID:10534)':'stomach cancer (DOID:10534)', \
                                         'Melanoma (DOID:1909)':'melanoma (DOID:1909)',\
                                         'melanoma (DOID:4159)':'melanoma (DOID:1909)',\
+                                        'Liver cancer(DOID:3571)':'liver cancer (DOID:3571)',\
                                         'urinary bladder cancer (DOID: 11054)':'urinary bladder cancer (DOID:11054)',\
                                         'Urinary bladder cancer (DOID:11054)':'urinary bladder cancer (DOID:11054)',\
                                         'Uterine Cancer':'uterine cancer (DOID:363)',\
@@ -100,4 +101,14 @@ from matplotlib_venn import venn2
 # Use the venn2 function
 venn2(subsets = (258, 0, 213), set_labels = ('', ''))
 plt.show()
+# %%
+df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/Cancer Biomarkers v1.0 - Reviewed Biomarkers.csv' , index_col=0)
+df = df.rename(columns={'Disease name': 'Disease'})
+index = df.index
+number_of_rows = len(index)
+print(number_of_rows)
+# %%
+print(df.nunique())
+
+
 # %%
