@@ -1,4 +1,4 @@
-# %%
+#%%
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,42 +6,45 @@ from matplotlib.patches import Polygon
 import seaborn as sns
 plt.style.use('classic') 
 sns.set(style="ticks")
-
-def dfChkBasics(dframe, valCnt = False): 
-  cnt = 1
-  print('\ndataframe Basic Check function -')
+# %%
+def Dataset(dframe, valCnt = False): 
+  count = 1
+  print('\nDataset basic dataframe function -')
   try:
-    print(f'\n{cnt}: info(): ')
-    cnt+=1
+    print(f'\n{count}: Info(): ')
+    count+=1
     print(dframe.info())
   except: pass
 
-  print(f'\n{cnt}: describe(): ')
-  cnt+=1
+  print(f'\n{count}: Describe(): ')
+  count+=1
   print(dframe.describe())
   try:
-    print(f'\n{cnt}: columns: ')
-    cnt+=1
+    print(f'\n{count}: Columns: ')
+    count+=1
     print(dframe.columns)
   except: pass
 
-  print(f'\n{cnt}: head() -- ')
-  cnt+=1
+  print(f'\n{count}: Head() -- ')
+  count+=1
   print(dframe.head())
 
-  print(f'\n{cnt}: shape: ')
-  cnt+=1
+  print(f'\n{count}: Shape: ')
+  count+=1
   print(dframe.shape)
 
   if (valCnt):
     print('\nValue Counts for each feature -')
     for colname in dframe.columns :
-      print(f'\n{cnt}: {colname} value_counts(): ')
+      print(f'\n{count}: {colname} value_counts(): ')
       print(dframe[colname].value_counts())
-      cnt +=1
-df = pd.read_csv(r'/Users/hawacoulibaly/Desktop/All_FDA.csv' , index_col=0) 
-dfChkBasics(df, True)
-#%%
+      count +=1
+
+df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/human_cancer_biomarker_panel_prosigna_breast_cancer.csv' , index_col=0)
+
+Dataset(df, True)
+# %% 
+
 df = df.rename(columns={'Disease name': 'Disease'})
 df = df.rename(columns={'BEST biomarker type': 'BEST'})
 df = df.rename(columns={'Assessed biomarker entity': 'entity'})
