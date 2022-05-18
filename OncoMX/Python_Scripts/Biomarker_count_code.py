@@ -39,13 +39,15 @@ def dfChkBasics(dframe, valCnt = False):
       print(f'\n{cnt}: {colname} value_counts(): ')
       print(dframe[colname].value_counts())
       cnt +=1
-df = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/OncoMX/FDA_Dataset/FDA.csv' , index_col=0) 
+df = pd.read_csv(r'/Users/hawacoulibaly/Desktop/All_FDA.csv' , index_col=0) 
 dfChkBasics(df, True)
 #%%
 df = df.rename(columns={'Disease name': 'Disease'})
 df = df.rename(columns={'BEST biomarker type': 'BEST'})
-df['Disease'].value_counts()
-df['BEST biomarker type'].value_counts()
+df = df.rename(columns={'Assessed biomarker entity': 'entity'})
+
+#df['Disease'].value_counts()
+#df['BEST biomarker type'].value_counts()
 
 # %%
 print(df.Disease.describe(), '\n', df.Disease.value_counts(dropna=False))
