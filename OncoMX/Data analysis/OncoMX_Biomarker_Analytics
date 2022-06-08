@@ -1,0 +1,108 @@
+# %% Markdown
+# %%
+"""
+
+This script will check for basics in the biomarker dataset comprising 
+COVID19, Cancer, and Diabetes biomarkers integrated into the OncoMX database
+at https://data.oncomx.org
+
+"""
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
+import seaborn as sns
+plt.style.use('classic') 
+sns.set(style="ticks")
+
+# Defining a function to check for basics in the dataframe
+def Dataset(dframe, valCnt = False): 
+  count = 1
+  print('\nDataset basic dataframe function -')
+  try:
+    print(f'\n{count}: Info(): ')
+    count+=1
+    print(dframe.info())
+  except: pass
+
+  print(f'\n{count}: Describe(): ')
+  count+=1
+  print(dframe.describe())
+  try:
+    print(f'\n{count}: Columns: ')
+    count+=1
+    print(dframe.columns)
+  except: pass
+
+  print(f'\n{count}: Head() -- ')
+  count+=1
+  print(dframe.head())
+
+  print(f'\n{count}: Shape: ')
+  count+=1
+  print(dframe.shape)
+
+  if (valCnt):
+    print('\nValue Counts for each feature -')
+    for colname in dframe.columns :
+      print(f'\n{count}: {colname} value_counts(): ')
+      print(dframe[colname].value_counts())
+      count +=1
+
+
+# Upload and convert csv to dataframe dataset using absolute pathname
+df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/allbiomarkers-all.csv' , index_col=-1)
+
+Dataset(df, True)
+# %%
+#%%
+# Script to clean biomarker datasets at https://data.oncomx.org for biomarker count
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon
+import seaborn as sns
+plt.style.use('classic') 
+sns.set(style="ticks")
+# %%
+# Defining a function to check for basics in the dataframe
+def Dataset(dframe, valCnt = False): 
+  count = 1
+  print('\nDataset basic dataframe function -')
+  try:
+    print(f'\n{count}: Info(): ')
+    count+=1
+    print(dframe.info())
+  except: pass
+
+  print(f'\n{count}: Describe(): ')
+  count+=1
+  print(dframe.describe())
+  try:
+    print(f'\n{count}: Columns: ')
+    count+=1
+    print(dframe.columns)
+  except: pass
+
+  print(f'\n{count}: Head() -- ')
+  count+=1
+  print(dframe.head())
+
+  print(f'\n{count}: Shape: ')
+  count+=1
+  print(dframe.shape)
+
+  if (valCnt):
+    print('\nValue Counts for each feature -')
+    for colname in dframe.columns :
+      print(f'\n{count}: {colname} value_counts(): ')
+      print(dframe[colname].value_counts())
+      count +=1
+
+# Upload dataset using absolute pathname
+df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/Cancer Biomarkers v1.0 - Reviewed Biomarkers.csv' , index_col=0)
+
+Dataset(df, True)
+# %%
+df['Disease name'].value_counts()
+# %%
