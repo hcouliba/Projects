@@ -1,5 +1,10 @@
 #%%
-# Script to clean biomarker datasets at https://data.oncomx.org for biomarker count
+# 
+"""
+Script to clean biomarker QCed datasets at https://data.oncomx.org for bi-weekly 
+biomarker count
+
+"""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
