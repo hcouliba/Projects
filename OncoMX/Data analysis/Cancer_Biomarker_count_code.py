@@ -102,3 +102,4 @@ df.Disease.value_counts().plot(kind='bar', stacked=True, color=color, title='Bio
 
 print("\nReady to continue.")
 # %%
+
