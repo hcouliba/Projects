@@ -1,8 +1,12 @@
 # %% 
-! pip install numpy
+# ! pip install numpy
+# ! pip install pandas
+
 """
 Load dataset as dataframe
 """
-
-df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/Cancer Biomarkers v1.0 - Reviewed Biomarkers.csv' , index_col=0)
+import numpy as np
+import pandas as pd 
+# %%
+df = pd.read_csv(r'C:\Users\hc893\Documents\SKCM\SKCM.Merge_rnaseqv2__illuminahiseq_rnaseqv2_Level_3__RSEM_genes_normalized__data')
 # %%
