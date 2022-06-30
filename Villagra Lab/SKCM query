@@ -1,0 +1,8 @@
+# %% 
+! pip install numpy
+"""
+Load dataset as dataframe
+"""
+
+df = pd.read_csv(r'/Users/hawacoulibaly/Downloads/Cancer Biomarkers v1.0 - Reviewed Biomarkers.csv' , index_col=0)
+# %%
