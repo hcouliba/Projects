@@ -5,8 +5,74 @@
 """
 Load dataset as dataframe
 """
-import numpy as np
-import pandas as pd 
+
 # %%
-df = pd.read_csv(r'C:\Users\hc893\Documents\SKCM\SKCM.Merge_rnaseqv2__illuminahiseq_rnaseqv2_Level_3__RSEM_genes_normalized__data')
+import numpy as np
+from itertools import count
+import pandas as pd
+from pandas.io.parsers import read_csv
+import matplotlib.pyplot as plt
+import scipy
+import seaborn as sns
+import scipy
+# %%
+dfmRNA = pd.read_csv(r'/Users/hawacoulibaly/Documents/Villagra_Lab/SKCM.rnaseqv2__illuminahiseq_rnaseqv2_Level_3__RSEM_genes_normalized.data.csv')
+dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/Villagra_Lab/clinical.project-TCGA-SKCM.2022-06-30.csv')
+
+# %%
+#dfskcm = df.copy()
+
+#corrMatrix = dfskcm.corr()
+#plt.figure(figsize=(15,12))
+#sns.heatmap(corrMatrix, annot=True)
+#plt.title("Correlation Matrix - Red and White Combined")
+#plt.savefig("corrMatrix_all.png")
+#plt.show()
+
+# %%
+"""
+
+"""
+class myRedModel:
+    def __init__(self):
+        self
+     
+    def b_alcohol(self,alcohol): 
+        al = alcohol 
+        return al
+    
+    def b_sulphates(self,sulphates): 
+        su= sulphates
+        return su 
+    
+    def b_citricacid(self,citricacid):
+        ca = citricacid 
+        return ca
+    
+    def b_volatileacidity(self,volatileacidity):
+        fi = volatileacidity
+        return fi
+    
+    def predictQuality( self,  wine,n,m,p,q ): # this is increment FACTOR
+        alcoholvalue = self.b_alcohol(wine["alcohol"])+n
+        sulphatesvalue = self.b_sulphates(wine["citric_acid"]) +m
+        citricvalue = self.b_citricacid(wine["sulphates"])+p
+        volatilevalue = self.b_volatileacidity(wine["volatile_acidity"]) +q
+
+        qualfloat = +0.30907815*alcoholvalue \
+            -0.07912506* sulphatesvalue\
+                + 0.69551611* citricvalue\
+                    -1.26505845*volatilevalue\
+                        +2.64591787
+        qual = int(round(qualfloat))
+        
+    
+        if qual > 6: 
+            label = "high quality"
+        elif qual == 6: 
+            label = "medium quality"
+        elif qual < 6: 
+            label = "low quality"
+        return label 
+
 # %%
