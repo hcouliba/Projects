@@ -3,7 +3,7 @@
 # ! pip install pandas
 
 """
-Load dataset as dataframe
+Load datasetS as dataframe
 """
 
 # %%
@@ -16,10 +16,16 @@ import scipy
 import seaborn as sns
 import scipy
 # %%
-dfmRNA = pd.read_csv(r'/Users/hawacoulibaly/Documents/Villagra_Lab/SKCM.rnaseqv2__illuminahiseq_rnaseqv2_Level_3__RSEM_genes_normalized.data.csv')
-dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/Villagra_Lab/clinical.project-TCGA-SKCM.2022-06-30.csv')
-
+# mRNA data
+dfmRNA = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/SKCM.rna_RSEM_genes_data.csv')
 # %%
+#Clinical data
+dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/clinical.csv')
+# %%
+# Case id dictionary
+dfDict = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/case_id_dict.csv')
+# %%
+
 #dfskcm = df.copy()
 
 #corrMatrix = dfskcm.corr()
