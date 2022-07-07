@@ -25,6 +25,12 @@ dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villag
 # Case id dictionary
 dfDict = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/case_id_dict.csv')
 # %%
+# for gene item in gene_id in dfmRNA, 
+    #find column_name with value > O
+        # for items in column_name,
+            # create dataframe from dfClinical with corresponding id
+
+# %%
 """
 
 """
