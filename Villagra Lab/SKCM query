@@ -20,21 +20,10 @@ import scipy
 dfmRNA = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/SKCM.rna_RSEM_genes_data.csv')
 # %%
 #Clinical data
-dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/clinical.csv')
+dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/clinical.csv', index_col= 0)
 # %%
 # Case id dictionary
 dfDict = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/case_id_dict.csv')
-# %%
-
-#dfskcm = df.copy()
-
-#corrMatrix = dfskcm.corr()
-#plt.figure(figsize=(15,12))
-#sns.heatmap(corrMatrix, annot=True)
-#plt.title("Correlation Matrix - Red and White Combined")
-#plt.savefig("corrMatrix_all.png")
-#plt.show()
-
 # %%
 """
 
