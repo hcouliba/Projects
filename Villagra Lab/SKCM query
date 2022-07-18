@@ -3,7 +3,7 @@
 # ! pip install pandas
 
 """
-Load datasetS as dataframe
+Load datasets as dataframe
 """
 
 # %%
@@ -12,23 +12,91 @@ from itertools import count
 import pandas as pd
 from pandas.io.parsers import read_csv
 import matplotlib.pyplot as plt
-import scipy
+from scipy.stats import zscore
 import seaborn as sns
 import scipy
 # %%
 # mRNA data
-dfmRNA = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/SKCM.rna_RSEM_genes_data.csv')
+dfmRNA = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/RNA.processed.csv', index_col = 0)
 # %%
 #Clinical data
-dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/clinical.csv', index_col= 0)
+dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/clin.merged.csv', index_col= 0)
 # %%
 # Case id dictionary
 dfDict = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/case_id_dict.csv')
 # %%
+def Dataset(dframe, valCnt = False): 
+  count = 1
+  print('\nDataset basic dataframe function -')
+  try:
+    print(f'\n{count}: Info(): ')
+    count+=1
+    print(dframe.info())
+  except: pass
+
+  print(f'\n{count}: Describe(): ')
+  count+=1
+  print(dframe.describe())
+  try:
+    print(f'\n{count}: Columns: ')
+    count+=1
+    print(dframe.columns)
+  except: pass
+
+  print(f'\n{count}: Head() -- ')
+  count+=1
+  print(dframe.head())
+
+  print(f'\n{count}: Shape: ')
+  count+=1
+  print(dframe.shape)
+
+  if (valCnt):
+    print('\nValue Counts for each feature -')
+    for colname in dframe.columns :
+      print(f'\n{count}: {colname} value_counts(): ')
+      print(dframe[colname].value_counts())
+      count +=1
+# %%
+Dataset(dfmRNA, True)
+# %%
+dfmRNA1 = dfmRNA.copy()
+# %%
+"""
+Transform data to have patient samples as rows and genes as columns 
+"""
+
+# dfmRNA.shape      check shape  ((20531, 474)) transpose dataframe
+dfExpression = dfmRNA1.T
+# dfmRNA_transposed.shape     verify  ((474, 20531))
+# %%
+#Scale data using Z-Score 
+dfZscore = dfExpression.apply(zscore)
+# Check dfZscore.head()
+# %%
+# Retrieve first column (samples) and column containing corresponding gene id
+dflevel1 = dfExpression[dfExpression['gene_id'].str.contains('100130426')]
+# %%
+# Remove columns where expression is 0
+#dflevel2 = dflevel1.loc[:, (dflevel1!= 0).any(axis=0)]
+# %%
+# List columns with patient sample > 0
+#dflevel3 = dflevel2.columns.values.tolist()
+# %%
+# Remove 'gene id' from list
+#dflevel4 = dflevel3[1:]
+# %%
+# Create dictionary for mapping mRNA data case submitter 
+# dictionary = dict(zip(dfDict.mRNA_case_submitter_id, dfDict.clinical_case_submitter_id))
+# len(dictionary)
+
+# dictionary2 = list(dfmRNA.gt(0).dot(dfmRNA.columns + ","))
 # for gene item in gene_id in dfmRNA, 
     #find column_name with value > O
         # for items in column_name,
             # create dataframe from dfClinical with corresponding id
+
+
 
 # %%
 """
@@ -77,3 +145,11 @@ class myRedModel:
         return label 
 
 # %%
+# !pip install scikit-survival
+import matplotlib.pyplot as plt
+from sksurv.nonparametric import kaplan_meier_estimator
+
+time, survival_prob = kaplan_meier_estimator(data_y["Status"], data_y["Survival_in_days"])
+plt.step(time, survival_prob, where="post")
+plt.ylabel("est. probability of survival $\hat{S}(t)$")
+plt.xlabel("time $t$")
