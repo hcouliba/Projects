@@ -20,7 +20,7 @@ import scipy
 dfmRNA = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/RNA.processed.csv', index_col = 0)
 # %%
 #Clinical data
-dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/clin.merged.csv', index_col= 0)
+dfClinical = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/clinical.csv', index_col= 0)
 # %%
 # Case id dictionary
 dfDict = pd.read_csv(r'/Users/hawacoulibaly/Documents/GitHub/HIVE-Lab/Villagra Lab/case_id_dict.csv')
@@ -70,12 +70,15 @@ Transform data to have patient samples as rows and genes as columns
 dfExpression = dfmRNA1.T
 # dfmRNA_transposed.shape     verify  ((474, 20531))
 # %%
-#Scale data using Z-Score 
+# Scale data using Z-Score 
 dfZscore = dfExpression.apply(zscore)
 # Check dfZscore.head()
 # %%
+# Set samples patient index to its own column
+dfZscore = dfZscore.rename_axis('samples').reset_index()
+# %%
 # Retrieve first column (samples) and column containing corresponding gene id
-dflevel1 = dfExpression[dfExpression['gene_id'].str.contains('100130426')]
+dflevel1 = dfZscore[dfZscore['gene_id'].str.contains('LOC100130426')]
 # %%
 # Remove columns where expression is 0
 #dflevel2 = dflevel1.loc[:, (dflevel1!= 0).any(axis=0)]
@@ -99,57 +102,28 @@ dflevel1 = dfExpression[dfExpression['gene_id'].str.contains('100130426')]
 
 
 # %%
-"""
+# Clean survival data 
+dfClinicalcopy1 = dfClinical.copy()
+print(dfClinicalcopy1.vital_status.value_counts())
+# %%
+def cleanStatus (row):
+    thisstatus = row['vital_status']
+    if thisstatus == 'Alive' : return 1
+    if thisstatus == 'Dead' : return 0
+    if thisstatus == 'Not Reported' : return np.nan
+    return np.nan
 
-"""
-class myRedModel:
-    def __init__(self):
-        self
-     
-    def b_alcohol(self,alcohol): 
-        al = alcohol 
-        return al
-    
-    def b_sulphates(self,sulphates): 
-        su= sulphates
-        return su 
-    
-    def b_citricacid(self,citricacid):
-        ca = citricacid 
-        return ca
-    
-    def b_volatileacidity(self,volatileacidity):
-        fi = volatileacidity
-        return fi
-    
-    def predictQuality( self,  wine,n,m,p,q ): # this is increment FACTOR
-        alcoholvalue = self.b_alcohol(wine["alcohol"])+n
-        sulphatesvalue = self.b_sulphates(wine["citric_acid"]) +m
-        citricvalue = self.b_citricacid(wine["sulphates"])+p
-        volatilevalue = self.b_volatileacidity(wine["volatile_acidity"]) +q
-
-        qualfloat = +0.30907815*alcoholvalue \
-            -0.07912506* sulphatesvalue\
-                + 0.69551611* citricvalue\
-                    -1.26505845*volatilevalue\
-                        +2.64591787
-        qual = int(round(qualfloat))
-        
-    
-        if qual > 6: 
-            label = "high quality"
-        elif qual == 6: 
-            label = "medium quality"
-        elif qual < 6: 
-            label = "low quality"
-        return label 
+dfClinicalcopy1['vital_status'] = dfClinicalcopy1.apply(cleanStatus, axis =1)
+print(dfClinicalcopy1.vital_status.value_counts())
 
 # %%
 # !pip install scikit-survival
 import matplotlib.pyplot as plt
 from sksurv.nonparametric import kaplan_meier_estimator
+data_y = dfClinical.copy()
 
-time, survival_prob = kaplan_meier_estimator(data_y["Status"], data_y["Survival_in_days"])
+time, survival_prob = kaplan_meier_estimator(data_y["vital_status"], data_y["days_to_death"])
 plt.step(time, survival_prob, where="post")
 plt.ylabel("est. probability of survival $\hat{S}(t)$")
 plt.xlabel("time $t$")
+# %%
